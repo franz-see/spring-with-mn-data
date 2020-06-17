@@ -5,6 +5,8 @@ import com.example.springwithmndata.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -22,5 +24,17 @@ public class BookService {
 
     public Book save(Book book) {
         return bookRepository.save(book);
+    }
+
+    public List<Book> findAllByTitle(String title) {
+        return bookRepository.findAllByTitle(title);
+    }
+
+    public List<Book> bulkSave(List<Book> books) {
+        // we are saving one by one here to be able to test transactions. If transaction is properly setup, if one of
+        // the books fail, then all books should fail.
+        return books.stream()
+                .map(bookRepository::save)
+                .collect(Collectors.toList());
     }
 }

@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 
-import static com.example.springwithmndata.controller.Paths.BOOK_GET_ONE;
-import static com.example.springwithmndata.controller.Paths.BOOK_SAVE;
+import java.util.List;
+
+import static com.example.springwithmndata.controller.Paths.*;
 
 @RestController
 public class BookController {
@@ -24,10 +25,22 @@ public class BookController {
     public Book getOne(@PathVariable Long id) {
         return bookService.getOne(id);
     }
-    
+
     @ResponseBody
     @PostMapping(BOOK_SAVE)
     public Book save(@RequestBody Book book) {
         return bookService.save(book);
+    }
+
+    @ResponseBody
+    @PostMapping(BOOK_BULK_SAVE)
+    public List<Book> bulkSave(@RequestBody List<Book> books) {
+        return bookService.bulkSave(books);
+    }
+
+    @ResponseBody
+    @GetMapping(BOOK_FIND)
+    public List<Book> find(@RequestParam String title) {
+        return bookService.findAllByTitle(title);
     }
 }
