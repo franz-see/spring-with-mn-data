@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "67b5ba04-11ab-4196-8bf5-db6043de86b2",
+		"name": "Spring Boot with Micronaut-Data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "176e114f-b5fd-4c3a-b2d9-10dc7980719e",
+						"exec": [
+							"pm.test(\"Check Saved Book\", function () {",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.id).to.be.ok",
+							"    pm.expect(jsonData.title).to.eql(\"My First Book\")",
+							"",
+							"    pm.environment.set(\"_book_id\", jsonData.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\" : \"My First Book\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/book/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"book",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "69857552-ae7a-442e-8fa3-34bbef209ae5",
+						"exec": [
+							"pm.test(\"Check Retrieved Book\", function () {",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"_book_id\"))",
+							"    pm.expect(jsonData.title).to.eql(\"My First Book\")",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/book/{{_book_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"book",
+						"{{_book_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
