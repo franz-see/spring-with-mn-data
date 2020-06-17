@@ -70,22 +70,6 @@
       <artifactId>micronaut-data-jdbc</artifactId>
       <version>${micronaut.data.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.micronaut.data</groupId>
-      <artifactId>micronaut-data-spring</artifactId>
-      <version>${micronaut.data.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-commons</artifactId>
-      <version>${spring-boot.version}</version>
-    </dependency>
     
     <dependency>
       <groupId>io.micronaut.configuration</groupId>
@@ -129,6 +113,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
       <version>${spring-boot.version}</version>
     </dependency>
 

@@ -1,5 +1,6 @@
 package com.example.springwithmndata.controller;
 
+import com.example.springwithmndata.aspect.Transactional;
 import com.example.springwithmndata.entity.Book;
 import com.example.springwithmndata.service.BookService;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,13 @@ public class BookController {
         return bookService.getOne(id);
     }
 
+    @Transactional
     @PostMapping(BOOK_SAVE)
     public Book save(@RequestBody Book book) {
         return bookService.save(book);
     }
 
+    @Transactional
     @PostMapping(BOOK_BULK_SAVE)
     public List<Book> bulkSave(@RequestBody List<Book> books) {
         return bookService.bulkSave(books);
