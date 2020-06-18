@@ -25,6 +25,7 @@ public class MicronautConfig {
         return applicationContext.getBean(BookRepository.class);
     }
     
+    @SuppressWarnings("unchecked")
     @Bean
     public SynchronousTransactionManager<Connection> transactionManager(ApplicationContext applicationContext) {
         return (SynchronousTransactionManager<Connection> ) applicationContext.getBean(SynchronousTransactionManager.class);

@@ -46,7 +46,7 @@ class BookRepositoryTest {
     void testQuery() {
         String query = beanContext.getBeanDefinition(BookRepository.class)
                 .getRequiredMethod("findAllByTitle", String.class)
-                .getAnnotationMetadata().stringValue(Query.class).get();
+                .getAnnotationMetadata().stringValue(Query.class).orElse(null);
 
         System.out.println("query = " + query);
     }
