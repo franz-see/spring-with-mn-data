@@ -76,6 +76,8 @@ https://github.com/micronaut-projects/micronaut-data/issues/602)
  * `BookRepository` is micronaut-data `JdbcRepository`.
  * `Book` is the micronaut-data-based entity used by `BookRepository`
  * `MicronautConfig` is what exposes the micronaut managed beans into Spring
+ * `MicronautTransactionAspect` is a Spring-based aspect in order to intercept method invocations of `@Transactional` 
+   methods in order to start a micronaut transaction. 
 
 ## Commands
 
