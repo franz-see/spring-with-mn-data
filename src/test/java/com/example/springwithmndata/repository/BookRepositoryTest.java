@@ -3,14 +3,13 @@ package com.example.springwithmndata.repository;
 import com.example.springwithmndata.entity.Book;
 import io.micronaut.context.BeanContext;
 import io.micronaut.data.annotation.Query;
+import io.micronaut.data.exceptions.DataAccessException;
 import io.micronaut.test.annotation.MicronautTest;
 import io.micronaut.transaction.SynchronousTransactionManager;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -28,15 +27,19 @@ class BookRepositoryTest {
     @Inject
     SynchronousTransactionManager<Connection> transactionManager;
 
-    @Disabled
     @Test
     void readOnly() {
-        Book savedBook = transactionManager.executeRead(status -> {
-            Book book = new Book();
-            book.setTitle("New Book");
-            return bookRepository.save(book);
-        });
-        assertNull(savedBook.getId());
+        try {
+            transactionManager.executeRead(status -> {
+                status.getConnection().setReadOnly(true);
+                Book book = new Book();
+                book.setTitle("New Book");
+                return bookRepository.save(book);
+            });
+            fail("Should NOT have been able to save in a read only transaction");
+        } catch (DataAccessException ignore) {
+            
+        }
     }
     
     @Test

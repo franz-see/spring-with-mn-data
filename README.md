@@ -31,6 +31,16 @@ public class MicronautConfig {
 }
 ```
 
+Also, you might also want to check `com.example.springwithmndata.aspect.MicronautTransactionAspect` on how I did 
+transactions. I could not use micronaut's integration with spring transaction (as of this writing) because it seems like
+I would need to downgrade my spring in order for me to do that. If you want to try that path, check the spring version 
+that your version of `io.micronaut.data:micronaut-data-spring` depends on. For example, for 
+[io.micronaut.data:micronaut-data-spring:1.0.2](https://search.maven.org/artifact/io.micronaut.data/micronaut-data-spring/1.0.2/jar), 
+it depends on `org.springframework.data:spring-data-commons:2.2.6.RELEASE` and 
+`org.springframework:spring-jdbc:5.2.5.RELEASE`, if your current versions of these artifacts are substantially higher 
+than these, then you might encounter some runtime issues (like dependency injection not even working) (see 
+https://github.com/micronaut-projects/micronaut-data/issues/602)
+
 ## Project Requirements
 
 1. Java 11
@@ -41,6 +51,9 @@ public class MicronautConfig {
 ```
 `-- src/main/java
     `-- com.example.springwithmndata
+        |-- aspect
+        |   |-- MicronautTransactionAspect
+        |   `-- @Transactional
         |-- config
         |   `-- MicronautConfig
         |-- controller

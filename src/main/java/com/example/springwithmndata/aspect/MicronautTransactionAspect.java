@@ -1,6 +1,7 @@
 package com.example.springwithmndata.aspect;
 
 import io.micronaut.transaction.SynchronousTransactionManager;
+import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.support.DefaultTransactionDefinition;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -41,6 +43,8 @@ public class MicronautTransactionAspect {
         AtomicReference<Throwable> exceptionThrown = new AtomicReference<>();
         Object result = transactionManager.execute(transactionDefinition, status -> {
             try {
+                workaroundForMicronautDataIssue605(transactionDefinition, status);
+                
                 return joinPoint.proceed();
             } catch (Throwable throwable) {
                 exceptionThrown.set(throwable);
@@ -54,6 +58,15 @@ public class MicronautTransactionAspect {
         }
         
         return result;
+    }
+
+    /**
+     * Workaround for https://github.com/micronaut-projects/micronaut-data/issues/605
+     */
+    private void workaroundForMicronautDataIssue605(DefaultTransactionDefinition transactionDefinition, TransactionStatus<Connection> status) throws SQLException {
+        if (transactionDefinition.isReadOnly()) {
+            status.getConnection().setReadOnly(true);
+        }
     }
 
     private Transactional getTransactionalAnnotation(ProceedingJoinPoint joinPoint) throws NoSuchMethodException {

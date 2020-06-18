@@ -20,6 +20,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @Transactional(readOnly = true)
     @GetMapping(BOOK_GET_ONE)
     public Book getOne(@PathVariable Long id) {
         return bookService.getOne(id);
@@ -36,7 +37,8 @@ public class BookController {
     public List<Book> bulkSave(@RequestBody List<Book> books) {
         return bookService.bulkSave(books);
     }
-    
+
+    @Transactional(readOnly = true)
     @GetMapping(BOOK_FIND)
     public List<Book> find(@RequestParam String title) {
         return bookService.findAllByTitle(title);
