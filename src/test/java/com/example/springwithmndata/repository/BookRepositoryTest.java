@@ -4,11 +4,14 @@ import com.example.springwithmndata.entity.Book;
 import io.micronaut.context.BeanContext;
 import io.micronaut.data.annotation.Query;
 import io.micronaut.test.annotation.MicronautTest;
+import io.micronaut.transaction.SynchronousTransactionManager;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 
+import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +25,20 @@ class BookRepositoryTest {
     @Inject
     BeanContext beanContext;
 
+    @Inject
+    SynchronousTransactionManager<Connection> transactionManager;
+
+    @Disabled
+    @Test
+    void readOnly() {
+        Book savedBook = transactionManager.executeRead(status -> {
+            Book book = new Book();
+            book.setTitle("New Book");
+            return bookRepository.save(book);
+        });
+        assertNull(savedBook.getId());
+    }
+    
     @Test
     void testQuery() {
         String query = beanContext.getBeanDefinition(BookRepository.class)

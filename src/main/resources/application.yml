@@ -4,10 +4,10 @@ micronaut:
 
 datasources:
   default:
-    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
+    url: "jdbc:mysql://127.0.0.1:3307/books"
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: root
     schema-generate: CREATE_DROP
-    dialect: H2
+    dialect: MYSQL
 

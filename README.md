@@ -3,6 +3,39 @@
 This is a sample project that uses Spring for dependency injection and controller, and uses Micronaut-Data for the 
 persistence
 
+## TLDR; To inject Micronaut beans into a Spring project
+
+See `com.example.springwithmndata.config.MicronautConfig`
+
+```
+@Configuration
+public class MicronautConfig {
+    
+    @Bean
+    public ApplicationContext micronautApplicationContext() {
+        ApplicationContext applicationContext = ApplicationContext.build(emptyMap()).build();
+        applicationContext.start();
+        return applicationContext;
+    }
+    
+    @Bean
+    public BookRepository bookRepository(ApplicationContext applicationContext) {
+        return applicationContext.getBean(BookRepository.class);
+    }
+    
+    @Bean
+    public SynchronousTransactionManager<Connection> transactionManager(ApplicationContext applicationContext) {
+        return (SynchronousTransactionManager<Connection> ) applicationContext.getBean(SynchronousTransactionManager.class);
+    }
+    
+}
+```
+
+## Project Requirements
+
+1. Java 11
+2. Docker (_to run the tests which uses mysql testcontainer_)
+
 ## Project Structure
 
 ```
@@ -31,17 +64,17 @@ persistence
  * `Book` is the micronaut-data-based entity used by `BookRepository`
  * `MicronautConfig` is what exposes the micronaut managed beans into Spring
 
-## To Build
+## Commands
 
-```
-./mvnw clean install
-```
-
-## To Run
-
-```
-./mvnw spring-boot:run
-```
+| Description              | Command                  |
+|--------------------------|:-------------------------|
+| Application : Build      | `./mvnw clean install`   |
+| Application : Run        | `./mvnw -Prun`           |
+| MySQL : Create Database  | `./mvnw -Pmysql-create`  |
+| MySQL : Start Database   | `./mvnw -Pmysql-start`   |
+| MySQL : Stop Database    | `./mvnw -Pmysql-stop`    |
+| MySQL : Destroy Database | `./mvnw -Pmysql-destroy` |
+| MySQL : Follow Tail      | `./mvnw -Pmysql-logs`    |
 
 ## Manual Testing
 
