@@ -26,7 +26,7 @@
     
     <logback.version>1.2.3</logback.version>
     
-    <mysql.version>8.0.19</mysql.version>
+    <mysql.version>8.0.28</mysql.version>
     
     <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
     
